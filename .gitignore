@@ -5,6 +5,7 @@
 *.synctex.gz
 
 build/
+devel/
 bin/
 lib/
 msg_gen/
@@ -48,6 +49,3 @@ qtcreator-*
 
 # Emacs
 .#*
-
-# Catkin custom files
-CATKIN_IGNORE

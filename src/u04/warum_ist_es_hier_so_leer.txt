@@ -1,0 +1,7 @@
+Lösung für den Zettel findet sich (inkl. .xacro) in ../../ub/u04
+
+Meine Lösung war nur eine Modifikation von Zahras rrbot - für zukünftige Übungen sollten wir aber besser ein eigenes package aufsetzen (zu viel Magic bei Zahra, die kein Mensch debuggen kann). Deshalb ist im Zuge der gerade stattfindenden Aufräumaktion dieses Verzeichnis GELEERT.
+
+Der Arm-Kram ist im arm2r Paket.
+
+rrbot habe ich mir CATKIN_IGNORE gekennzeichnet, da es sich mit den rrbot-Tutorials beisst (Paket-Namen nicht unique ^^). Will man rrbot ausführen, muss man das CATKIN_IGNORE entsprechend verschieben.
