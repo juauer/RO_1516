@@ -90,23 +90,45 @@ Wir sollen Screenshots erzeugen und zwar:
 
 - \emph{einen der simulierten Punktwolke (in rviz)}
 
-Was denn für eine Punktwolke? Im Tutorial wird {\bf nirgends} so etwas erwähnt und es gibt in rviz auch keine offensichtliche Möglichkeit so etwas anzuzeigen! Keine Ahnung, was Ihr meint.
+Folgt man dem Tutorial:
 
-- \emph{einen mit dem simulierten Kamerabild (in gazebo)}
+\url{http://wiki.ros.org/laser_pipeline/Tutorials/IntroductionToWorkingWithLaserScannerData}
 
-Wie ich in gazebo ein Kamerabild anzeigen kann wird {\bf nirgends} erwähnt. Im Tutorial und den anderen ''offiziellen'' Kanälen werden ein \emph{image\_show} Paket und rviz empfohlen. Was zum Geier wollt Ihr bloß von uns?
+sollte eine LaserScan-Message von rviz interpretiert werden können. Dies ist (hier bei uns) jedoch nicht der Fall: das Laser-Plugin liefert den in Abbildung \ref{fig:2-1} gezeigten Fehler. Das eine korrekte SensorMsg von gazebo gepublished wird, ist hierbei durch \emph{rostopic info} geprüft worden. Dokumentiert sind die meisten ros-Sachen ja bekanntlich katastrophal - so findet man auch hier reichlich tote links (z.B.
 
-Nun, das beste (und m.E. auch das sinnvollste!) was ich anbieten kann, ist ein Kamerabild in rviz (siehe auch Abbildung \ref{fig:2-1}) über das Image-Display. Aus irgendeinem Grund haben die Objekte manchmal eine z-Ausdehnung, manchmal aber auch nicht. Das Image-Display wurde hier dem Kamera-Display vorgezogen, da es einfacher einzurichten ist.
+\url{http://pr.willowgarage.com/pr-docs/ros-packages/laser_scan/html/classlaser__geometry_1_1LaserProjection.html}
+
+) wenn man nach Paket-Dokus sucht. Das macht Probleme sehr schwer zu debuggen und erneut haben wir somit eine Situation, die wir ohne signifikanten Zeitaufwand nicht lösen können. Sehr ärgerlich (und zeitaufwändig!). Den Beweis, dass wir den Sensor sinnvoll montiert haben, liefert Abbildung \ref{fig:2-2}.
 
 \begin{figure}[!htpb]
 \centering
-\includegraphics[width=0.85\linewidth]{capture_2-1}
-\caption{Roboter mit Kamera und (obendrauf) Laser in gazebo (links) und Kamerabild in rviz (rechts)}
+\includegraphics[width=0.6\linewidth]{capture_2-1}
+\caption{Fehler}
 \label{fig:2-1}
+\end{figure}
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=0.8\linewidth]{capture_2-2}
+\caption{Roboter mit Laser}
+\label{fig:2-2}
+\end{figure}
+
+\newpage
+- \emph{einen mit dem simulierten Kamerabild (in gazebo)}
+
+Wie man in gazebo ein Kamerabild anzeigen kann wird {\bf nirgends} erwähnt. Im Tutorial und den anderen ''offiziellen'' Kanälen werden ein \emph{image\_show} Paket und rviz empfohlen. Nach ausgiebiger (und wieder zeitaufwändiger!) Suche kommen wir zu dem Schluss, dass gazebo kein Kamerabild anzeigen kann und die Aufgabe nicht zu lösen ist.
+
+Nun, das beste (und m.E. auch das sinnvollste!) was wir hier anbieten können, ist ein Kamerabild in rviz (siehe auch Abbildung \ref{fig:2-3}) über das Image-Display. Aus irgendeinem Grund haben die Objekte manchmal eine z-Ausdehnung, manchmal aber auch nicht.
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=0.8\linewidth]{capture_2-3}
+\caption{Roboter mit Kamera und (obendrauf) Laser in gazebo (links) und Kamerabild in rviz (rechts)}
+\label{fig:2-3}
 \end{figure}
 \end{task}
 
-\newpage
 \begin{task}{DH-Parameter}
 \item[]
 \begin{table}[!htpb]
