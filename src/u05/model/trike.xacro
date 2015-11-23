@@ -148,7 +148,7 @@
 
   <joint name="joint_laser" type="fixed">
     <axis xyz="0 0 1" />
-    <origin xyz="0 ${-0.45 * body_l} ${body_h + wheel_r + 0.1}" rpy="0 0 0"/>
+    <origin xyz="0 ${-0.45 * body_l} ${body_h + wheel_r + 0.1}" rpy="0 ${PI / 16} ${-PI / 2}"/>
     <parent link="body"/>
     <child link="laser"/>
   </joint>
