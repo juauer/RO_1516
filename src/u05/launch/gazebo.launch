@@ -21,7 +21,7 @@
 	command="load"/>
 
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <param name="use_gui" value="true"/>
+    <param name="use_gui" value="false"/>
     <rosparam param="source_list">[trike/joint_states]</rosparam>
   </node>
 
@@ -31,5 +31,5 @@
 	args="-urdf -model trike -param robot_description"/>
  
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-	output="screen" ns="/trike" args="joint_state_controller joint_1_controller"/>
+	output="screen" ns="/trike" args="joint_state_controller joint_axis_controller"/>
 </launch>
