@@ -52,7 +52,7 @@
     </inertial>
   </link>
 
-  <joint name="joint_1" type="revolute">
+  <joint name="joint_axis" type="revolute">
     <parent link="body"/>
     <child link="axis"/>
     <origin xyz="0 ${-0.45 * body_l} ${wheel_r}" rpy="0 0 0"/>
@@ -78,12 +78,11 @@
     </inertial>
   </link>
 
-  <joint name="joint_0" type="continuous">
+  <joint name="joint_1" type="fixed">
     <parent link="axis"/>
     <child link="wheel_1"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <dynamics damping="0.7" />
   </joint>
 
   <!-- Wheel Rear 1 -->
@@ -179,12 +178,12 @@
     <child link="laser"/>
   </joint>
 
-  <transmission name="tran_1">
+  <transmission name="tran_axis">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="joint_1">
+    <joint name="joint_axis">
       <hardwareInterface>PositionJointInterface</hardwareInterface>
     </joint>
-    <actuator name="motor_1">
+    <actuator name="motor_axis">
       <hardwareInterface>PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
