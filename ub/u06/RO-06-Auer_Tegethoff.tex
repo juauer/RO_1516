@@ -81,36 +81,33 @@ belowcaptionskip=15pt}
 
 \begin{task}{Inverse Kinematik}
 \item[]
-Die Rechnung auf den Folien ist leider nicht korrekt (?) - die Matrizen sind etwas komplexer:
-
+In der Vorlesung wurde die Jocobi-Matrix $J$ bereits hergeleitet:
 \begin{align*}
-T_{2\rightarrow 0}&=\begin{pmatrix}c_1&-s_1&0\\s_1&c_1&0\\0&0&1\end{pmatrix}\cdot\begin{pmatrix}c_2&-s_2&l_1\\s_2&c_2&0\\0&0&1\end{pmatrix}\text{(soweit, so gut. Aber:)}\\
-\begin{pmatrix}x\\y\\1\end{pmatrix}&=\begin{pmatrix}c_1&-s_1&0\\s_1&c_1&0\\0&0&1\end{pmatrix}\cdot\begin{pmatrix}c_2&-s_2&l_1\\s_2&c_2&0\\0&0&1\end{pmatrix}\cdot\begin{pmatrix}l_2\\0\\1\end{pmatrix}\\
-&=\begin{pmatrix}c_1&-s_1&0\\s_1&c_1&0\\0&0&1\end{pmatrix}\cdot\begin{pmatrix}l_2\cdot c_2+l_1\\l_2\cdot s_2\\1\end{pmatrix}\\
-&=\begin{pmatrix}l_1\cdot c_1+l_2\cdot (c_1\cdot c_2-s_1\cdot s_2)\\l_1\cdot s_1+l_2\cdot (s_1\cdot c_2+c_1\cdot s_2)\\1\end{pmatrix}\\
-\frac{\delta}{\delta\Theta_1}\begin{pmatrix}x\\y\\1\end{pmatrix}&=\begin{pmatrix}-l_1\cdot s_1+l_2\cdot (-s_1\cdot c_2-c_1\cdot s_2)\\l_1\cdot c_1+l_2\cdot (c_1\cdot c_2-s_1\cdot s_2)\\0\end{pmatrix}\\
-\frac{\delta}{\delta\Theta_2}\begin{pmatrix}x\\y\\1\end{pmatrix}&=\begin{pmatrix}l_2\cdot (-c_1\cdot s_2-s_1\cdot c_2)\\l_2\cdot (-s_1\cdot s_2+c_1\cdot c_2)\\0\end{pmatrix}\\
-J&=\begin{pmatrix}-l_1\cdot s_1+l_2\cdot (-s_1\cdot c_2-c_1\cdot s_2)&l_2\cdot (-c_1\cdot s_2-s_1\cdot c_2)\\l_1\cdot c_1+l_2\cdot (c_1\cdot c_2-s_1\cdot s_2)&l_2\cdot (-s_1\cdot s_2+c_1\cdot c_2)\end{pmatrix}\\
-&=\begin{pmatrix}-y&l_2\cdot (-c_1\cdot s_2-s_1\cdot c_2)\\x&l_2\cdot (-s_1\cdot s_2+c_1\cdot c_2)\end{pmatrix}
+J&=\begin{pmatrix}-y&-l_2\cdot s_{12}\\x&l_2\cdot c_{12}\end{pmatrix}
 \end{align*}
 
-Da die Jakobi-Matrix hier immer hübsch quadratisch ist, kann die Inverse direkt über die geschlossene Form berechnet werden:
+Da die Jacobi-Matrix hier immer hübsch quadratisch ist, kann die Inverse direkt über die geschlossene Form berechnet werden:
 
 \begin{align*}
-J^{-1}&=\frac{1}{l_1\cdot l_2\cdot (s_1^2\cdot s_2+c_1^2\cdot s_2)}\cdot\begin{pmatrix}l_2\cdot (-s_1\cdot s_2+c_1\cdot c_2)&-l_2\cdot (-c_1\cdot s_2-s_1\cdot c_2)\\-l_1\cdot c_1-l_2\cdot (c_1\cdot c_2-s_1\cdot s_2)&-l_1\cdot s_1+l_2\cdot (-s_1\cdot c_2-c_1\cdot s_2)\end{pmatrix}
+J^{-1}&=\frac{1}{x\cdot l_2\cdot s_{12}-y\cdot l_2\cdot c_{12}}\cdot\begin{pmatrix}l_2\cdot c_{12}&l_2\cdot s_{12}\\-x&-y\end{pmatrix}
 \end{align*}
 
-Es seien nun: $l_1,l_2$ fest, $tf(\Theta_1,\Theta_2):\mathbb{R}\times\mathbb{R}\rightarrow\mathbb{R}^2$ eine Funktion um wie gezeigt $T_{2\rightarrow 0}$ zu erzeugen, $j(\Theta_1,\Theta_2):\mathbb{R^2}\rightarrow\mathbb{R}^{2\times 2}$ eine Funktion um wie gezeigt $J^{-1}$ zu erzeugen, $f(\overrightarrow{x}):\mathbb{R}^2\rightarrow\mathbb{B}$ eine Funktion die bei Eingabe der aktuellen Position $\overrightarrow{x}$ entscheidet ob der Algorithmus terminiert und $d\in\left[ 0,1\right] $ ein Dämpfungsfaktor. Dann lässt sich die inverse Kinematik folgenderweise berechnen:
+Der Roboter hat allerdings anders angeordnete Achsen, so dass die Matrix noch einmal angepasst werden muss, zu:
 
-\newpage
+\begin{align*}
+J^{-1}&=\frac{1}{z\cdot l_2\cdot s_{12}+y\cdot l_2\cdot c_{12}}\cdot\begin{pmatrix}-l_2\cdot s_{12}&l_2\cdot c_{12}\\-y&-z\end{pmatrix}
+\end{align*}
+
+Es seien nun: $l_1,l_2$ fest, $tf(\Theta_1,\Theta_2):\mathbb{R}\times\mathbb{R}\rightarrow\mathbb{R}^2$ eine Funktion um die aktuelle Pose $\overrightarrow{x}$ zu berechnen, $j(\Theta_1,\Theta_2):\mathbb{R}^2\rightarrow\mathbb{R}^{2\times 2}$ eine Funktion um wie gezeigt $J^{-1}$ zu erzeugen und $I\in\mathbb{N}$ die Anzahl der Iterationen. Dann lässt sich die inverse Kinematik folgenderweise berechnen:
+
 \begin{enumerate}
-\item[(1)]Initiale Winkel: $\Theta_1,\Theta_2$
+\item[(1)]Initiale Winkel: $\Theta_1:=-\frac{1}{8}\cdot\pi,\Theta_2:=\frac{3}{4}\cdot\pi$
 \item[(2)]End-Effektor-Position: $\overrightarrow{x}=tf(\Theta_1,\Theta_2)$
 \item[(3)]Ziel-Position: $\overrightarrow{x_t}$
-\item[(4)]solange $f(\overrightarrow{x})$:
+\item[(4)]Für alle $i\in I$:
 \begin{enumerate}
-\item[(5)]Prüfe und behandle ggf. Singularität (tritt hier nicht auf, falls Anfangsposition günstig gewählt)
-\item[(6)]$\begin{pmatrix}\Theta_1\\\Theta_2\end{pmatrix}+=d\cdot j(\Theta_1,\Theta_2)\cdot (\overrightarrow{x_t}-\overrightarrow{x})$
+\item[(5)]Prüfe und behandle ggf. Singularität (tritt hier mit hoher Wahrscheinlichkeit nicht auf, falls Anfangsposition günstig gewählt)
+\item[(6)]$\begin{pmatrix}\Theta_1\\\Theta_2\end{pmatrix}+=\frac{i}{|I]}\cdot j(\Theta_1,\Theta_2)\cdot (\overrightarrow{x_t}-\overrightarrow{x})$
 \item[(7)]$\overrightarrow{x}=tf(\Theta_1,\Theta_2)$
 \end{enumerate}
 \end{enumerate}
@@ -120,10 +117,10 @@ Genauso implementiert liefert das die folgenden Ergebnisse:
 \begin{figure}[!htpb]
 \begin{center}
 \subfigure[Plot]{
-  \includegraphics[width=0.49\linewidth]{capture_1-1}
+  \includegraphics[width=0.9\linewidth]{capture_1-1}
 }
 \subfigure[Trajektorie]{
-  \includegraphics[width=0.49\linewidth]{capture_1-2}
+  \includegraphics[width=0.9\linewidth]{capture_1-2}
 }
 \end{center}
 \caption{1 Iteration}
@@ -133,10 +130,10 @@ Genauso implementiert liefert das die folgenden Ergebnisse:
 \begin{figure}[!htpb]
 \begin{center}
 \subfigure[Plot]{
-  \includegraphics[width=0.49\linewidth]{capture_1-3}
+  \includegraphics[width=0.9\linewidth]{capture_1-3}
 }
 \subfigure[Trajektorie]{
-  \includegraphics[width=0.49\linewidth]{capture_1-4}
+  \includegraphics[width=0.9\linewidth]{capture_1-4}
 }
 \end{center}
 \caption{10 Iteration}
@@ -146,10 +143,10 @@ Genauso implementiert liefert das die folgenden Ergebnisse:
 \begin{figure}[!htpb]
 \begin{center}
 \subfigure[Plot]{
-  \includegraphics[width=0.49\linewidth]{capture_1-5}
+  \includegraphics[width=0.9\linewidth]{capture_1-5}
 }
 \subfigure[Trajektorie]{
-  \includegraphics[width=0.49\linewidth]{capture_1-6}
+  \includegraphics[width=0.9\linewidth]{capture_1-6}
 }
 \end{center}
 \caption{100 Iteration}
@@ -159,17 +156,17 @@ Genauso implementiert liefert das die folgenden Ergebnisse:
 \begin{figure}[!htpb]
 \begin{center}
 \subfigure[Plot]{
-  \includegraphics[width=0.49\linewidth]{capture_1-7}
+  \includegraphics[width=0.9\linewidth]{capture_1-7}
 }
 \subfigure[Trajektorie]{
-  \includegraphics[width=0.49\linewidth]{capture_1-8}
+  \includegraphics[width=0.9\linewidth]{capture_1-8}
 }
 \end{center}
 \caption{1000 Iteration}
 \end{figure}
-
 \end{task}
 
+\newpage\newpage\newpage\newpage
 \begin{task}{Null-Space}
 \item[]
 
