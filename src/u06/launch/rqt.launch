@@ -1,0 +1,5 @@
+<launch>
+	<arg name="i" />
+	<node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/ee_y /ee_z" />
+	<node name="trajectory" pkg="u06" type="u06_trajectory" args="$(arg i)" />
+</launch>
