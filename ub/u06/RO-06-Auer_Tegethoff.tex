@@ -169,19 +169,17 @@ Genauso implementiert liefert das die folgenden Ergebnisse:
 \newpage\newpage\newpage\newpage
 \begin{task}{Null-Space}
 \item[]
-$
-	nullspace \left(\begin{pmatrix} 
-				0.5\\
-				y
-			\end{pmatrix}\right) = \{
-				\begin{pmatrix}
-					\Theta_{1}\\
-					\Theta_{2}
-				\end{pmatrix} | -q_{1} \le \Theta_{1} \le q_{1} \land \Theta_{2} = \begin{cases}
-					q_{2}, \text{ falls } \Theta_{1} = \pm q_{1}\\
-					\text{sonst}\\
-				\end{cases}
-			\}
-$
+Im Allgemeinen gilt hier:
+
+$$\text{\bf nullspace}\left(\begin{pmatrix}0.5\\y\end{pmatrix}\right)=\left\{\begin{pmatrix}\Theta_1\\\Theta_2\end{pmatrix}|0.5=c_1+0.9\cdot c_{12}\right\}$$
+
+Das lässt sich schlecht in eine geschlossene Form bringen - malt man ein großes Bild kommt man nach kurzer Überlegung allerdings auch auf den Zusammenhang:
+
+\begin{align*}
+\text{\bf nullspace}\left(\begin{pmatrix}0.5\\y\end{pmatrix}\right)=&\left\{\begin{pmatrix}\Theta_1\\\Theta_2\end{pmatrix}|c^{-1}(0.1)-\pi\le\Theta_1\le c^{-1}(0.1)\right.\\
+&\left.\wedge\Theta_2=-c^{-1}(0.1)\pm c^{-1}\left(\frac{0.5+c(c^{-1}(0.1)+\pi)}{0.9}\right)\right\}
+\end{align*}
+
+Erklärung (geht kaum ohne Zeichung) ist uns zu komplex zum TeXen.
 \end{task}
 \end{document}
