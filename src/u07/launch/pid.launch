@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="p" />
+	<arg name="i" />
+	<arg name="m" />
+	<arg name="d" />
+	<node name="controller" pkg="u07" type="u07_controller" args="$(arg p) $(arg i) $(arg m) $(arg d)" />
+	<node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/ackermann_vehicle/y /ackermann_vehicle/error /ackermann_vehicle/pidout" />
+</launch>
