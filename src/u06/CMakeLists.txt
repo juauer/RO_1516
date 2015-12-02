@@ -1,13 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(u06)
 
-find_package(catkin REQUIRED roscpp std_msgs tf message_generation visualization_msgs)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  visualization_msgs
-)
+find_package(catkin REQUIRED roscpp std_msgs tf visualization_msgs)
 
 catkin_package(
   CATKIN_DEPENDS message_runtime
