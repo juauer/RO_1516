@@ -79,35 +79,70 @@ belowcaptionskip=15pt}
 \end{center}
 \hrule
 
-\begin{task}{Control}
+\begin{task}{Control}\item[]
+Wir betrachten - wie vorgeschlagen - als Fehler nicht den absoluten Positions-Fehler, sondern den Winkel zur Wunschtrajektorie. Auf allen Plots sieht man:
+
+\begin{itemize}
+\item die aktuelle y-Position (blau)
+\item die Abweichung des Yaws im World-Frame vom Wunsch-Winkel ($=$Fehler) (rot)
+\item den Regelausgang (cyan)
+\end{itemize}
+
+Das Auto startet immer bei $y=3$ und versucht $y=-0.5$ (Mitte der rechten Spur) zu erreichen. Die Vorausschaustrecke $a$ zur Berechnung des Wunschwinkels ist stets $a=4m$ - für einen größeren Wert arbeiten einfachste P-Regler schon perfekt und es ist seht schwer das System zum oszillieren zu bringen. Ebenso willkürlich gewählt sind die Konstanten für Beschleunigung und Lenkbeschleunigung. Bei schlecht gewählten Konstanten neigt das Auto dazu Unfälle zu verursachen (üblicherweise in Form von Überschlägen). Es wäre nett gewesen, wenn wir hierfür eine Vorgabe gehabt hätten - überhaupt ein funktionierendes System zu konstruieren war mal wieder etwas kniffelig ;)
+
 \subtask{a}
-Im Moment ist das so:
-
-- Ich berechne den Fehler - wie vorgeschlagen - aus dem Winkel\\
-- Ich stecke ihn in den Regler\\
-- Ich plotte 1) y, 2) den Fehler und 3) den Regelausgang
-
-Im Header stehen alle relevanten Konstanten, außer p, i, m, d, x0, y0 und können dort angepasst werden.
-
-x0, y0 (Startposition) müssen in launch/gazebo.launch angepasst werden
-
-Zum starten:\\
-roslaunch u07 gazebo.launch\\
-roslaunch u07 pid.launch p:=<p> i:=<i> m:=<m> d:=<d>
-
-Wobei:\\
-p: der P-Anteil (double)\\
-i: der I-Anteil (double)\\
-d: der D-Anteil (double)\\
-m: die Länge der Liste für den I-Anteil (Gedächtnis) (int)
+Grundsätzlich ist ein großer P-Anteil $K_p$ erstrebenswert, um sich rasch der Wunschtrajektorie anzunähern. Der - experimentell ermittelt - größte Wert bei dem das Auto keinen Unfall baut (aufgrund zu starker Lenkbewegungen) ist $K_p=0.1$, was das in Abbildung \ref{fig:1} gezeigt Ergebnis liefert.
  
+ Arbeitet man zusätzlich mit einem D-Anteil, kann der P-Anteil ggf. größer gewählt werden: gesucht wurde deshalb für $K_p=0.2$ ein D-Anteil $K_d$ der so klein wie möglich ist, aber das Übersteuern verhindern. Für $K_p=0.1,K_d=0.3$ ergibt sich das in Abbildung \ref{fig:2} dargestellte Bild.
+ 
+ \newpage
 \subtask{b}
-Es müssen nun gute Werte gefunden und geplottet werden. Aktuelles Problem: es oszilliert nicht:
+Das System oszilliert bei $K_{p_k}=0.05$. Abbildung \ref{fig:3} zeigt ferner, dass die Periodenlänge $t$ in etwa $t=4$ ist. Nach Ziegler/Nichols ergeben sich somit die Regelanteile zu:
 
-Fährt man langsam, ist der primitivste P-Regler schon perfekt (keine Oszillation), fährt man hingegen schnell, geht das Auto kaputt (Überschlag).
+\begin{align*}
+K_p&=0.6\cdot K_{p_k}&=0.03\\
+K_i&=\frac{2\cdot K_p}{t}&=0.015\\
+K_d&=0.12\cdot K_p\cdot t&=0.0144
+\end{align*}
 
-Ich vermute, man {\bf muss} msg.drive.steering\_angle\_velocity setzen (ich nehme derzeit immer Maximum). Ich mache aber für heute erst mal Schluss.
+Wobei nirgendwo erwähnt wird (oder??) wie groß das ''Gedächtnis'' sein soll, was aber einen signifikanten Einfluss auf die Größe des I-Anteils hat. Wählt man die Gedächtnis-Größe zu groß, gibt es wieder Überschläge.\\
+Mit diesen Anteilen erhält man die in Abbildung \ref{fig:4} gezeigte Situation.
 
-Viel Spass beim rumspielen :)
+Ergebnisse:
+\begin{itemize}
+\item Der P-Regler stabilisiert sich nach ca. 12s ganz OK
+\item Der PD-Regler stabilisiert sich nach ca. 10s super
+\item Der PID-Regler stabilisiert sich nicht wirklich (oszilliert schwach), ist aber für diese Situation auch ungeeignet (keine Störgrößen vorhanden)
+\end{itemize}
+
+\newpage
+\begin{figure}[!htpb]
+\begin{center}
+\includegraphics[width=0.9\linewidth]{capture1}
+\end{center}
+\caption{P-Regler}
+\label{fig:1}
+\end{figure}
+\begin{figure}[!htpb]
+\begin{center}
+\includegraphics[width=0.9\linewidth]{capture2}
+\end{center}
+\caption{PD-Regler}
+\label{fig:2}
+\end{figure}
+\begin{figure}[!htpb]
+\begin{center}
+\includegraphics[width=0.9\linewidth]{capture3}
+\end{center}
+\caption{P-Regler (oszillierend)}
+\label{fig:3}
+\end{figure}
+\begin{figure}[!htpb]
+\begin{center}
+\includegraphics[width=0.9\linewidth]{capture4}
+\end{center}
+\caption{PID-Regler nach Ziegler/Nichols}
+\label{fig:4}
+\end{figure}
 \end{task}
 \end{document}
