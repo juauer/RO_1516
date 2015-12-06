@@ -35,9 +35,11 @@ double y     = 0.0;
 double error = 0.0;
 
 void odoCB(const nav_msgs::Odometry &msg) {
+	double uyaw = tf::getYaw(msg.pose.pose.orientation);
+	double syaw = uyaw <= M_PI ? uyaw : uyaw - 2.0 * M_PI;
 	y     = msg.pose.pose.position.y;
-	error = atan2(Controller::ty - y, Controller::ahead)
-			- tf::getYaw(msg.pose.pose.orientation);
+	error = Controller::ty == y ? 0
+			: atan2(Controller::ty - y, Controller::ahead) - syaw;
 }
 
 int main(int argc, char **argv) {
@@ -52,8 +54,8 @@ int main(int argc, char **argv) {
 	pub_drive  = n.advertise<ackermann_msgs::AckermannDriveStamped>("/ackermann_vehicle/ackermann_cmd", 100);
 	std_msgs::Float64 msg_plot;
 	ackermann_msgs::AckermannDriveStamped msg_drive;
-	msg_drive.drive.steering_angle_velocity = 0;
 	msg_drive.drive.jerk                    = 0;
+	msg_drive.drive.steering_angle_velocity = Controller::steer_vel;
 	msg_drive.drive.speed                   = Controller::speed;
 	msg_drive.drive.acceleration            = Controller::accel;
 	PID pid(atof(argv[1]), atof(argv[2]), atoi(argv[3]), atof(argv[4]));

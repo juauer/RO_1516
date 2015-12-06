@@ -17,12 +17,13 @@ private:
 };
 
 namespace Controller {
-	const int its      = 200;  // controll cycles total
-	const float rate   = 10.0; // controll cycles per sec
-	const double ahead = 10.0; // look-ahead-dist to compute error on angle
-	const double speed = 10.0; // target speed
-	const double accel =  2.0; // acceleration
-	const double ty    = -1.0; // target y (0: middle of the street)
+	const int its          = 500;  // controll cycles total
+	const float rate       = 10.0; // controll cycles per sec
+	const double ahead     =  4.0; // look-ahead-dist to compute error on angle
+	const double speed     = 10.0; // target speed
+	const double accel     =  2.0; // acceleration
+	const double steer_vel =  1.0; // steering velocity
+	const double ty        = -0.5; // target y (0: middle of the street)
 };
 
 #endif // CONTROLLER_H
