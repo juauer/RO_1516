@@ -29,8 +29,11 @@ msg/_*.py
 *.wikidoc
 
 # eclipse stuff
-.project
-.cproject
+*.project
+*.cproject
+*.settings*
+*RemoteSystemsTempFiles*
+*.metadata*
 
 # qcreator stuff
 CMakeLists.txt.user
