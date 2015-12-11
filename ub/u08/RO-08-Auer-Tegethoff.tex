@@ -86,6 +86,25 @@ belowcaptionskip=15pt}
 
 \begin{task}{A*-Suche in ROS}
 \item[]
+Wir bleiben in C++ (falls Wiederverwendung in ROS erforderlich), visualisieren ohne Notwendigkeit aber natürlich nicht in ROS (Bilder mit opencv).
 
+Natürlich ist die Variante implementiert, die Kreise ausschließt. Anstatt eine Liste (mit teuren Operationen) zu verwalten, arbeitet der Algo aber auf einem 2D-Array in dem der \emph{CLOSED}-Status als Zustand für jede Zelle gehalten werden kann. Die \emph{OPEN}-Priority-Queue enthält Zeiger  auf diese Zellen. Ansonsten ist A* konventionell implementiert.
+
+Abbildung \ref{fig:2} zeigt die Ergebnisse. Auf den Bildern zeigt die y-Achse nach ''unten'', rote Zellen sind \emph{CLOSED}, graue sind \emph{OPEN}, blaue kennzeichnen das Hindernis, grüne Start- und Zielpunkt und die gelbe Linie den gefundenen Pfad. 
+
+\begin{figure}[!htpb]
+\centering
+\subfigure[$i=-1$]{
+  \includegraphics[width=0.48\linewidth]{../../src/u08/captures/capture_2-1}
+}
+\subfigure[i=0]{
+  \includegraphics[width=0.48\linewidth]{../../src/u08/captures/capture_2-2}
+}
+\subfigure[i=1]{
+  \includegraphics[width=0.48\linewidth]{../../src/u08/captures/capture_2-3}
+}
+\caption{A*}
+\label{fig:2}
+\end{figure}
 \end{task}
 \end{document}
