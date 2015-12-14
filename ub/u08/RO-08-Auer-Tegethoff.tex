@@ -81,14 +81,107 @@ belowcaptionskip=15pt}
 
 \begin{task}{A*-Suche}
 \item[]
+Seien $v$ der Knotenname, $c$ die tatsächlichen Kosten zu einem Knoten, $p$ der Vorgänger auf dem bisher besten Weg und $s\in\{N,O,C\}$ die Zustände der Knoten ($NEW$, $OPEN$ oder $CLOSED$). Dann läuft $A*$ wie folgt:
 
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$\infty$&$\infty$&$\infty$&$\infty$&$\infty$&$\infty$&$\infty$&$0$\\
+$p$&&&&&&&&\\
+$s$&N&N&N&N&N&N&N&O
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$h(19)$
+\end{minipage}
+
+$$\Downarrow$$
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$\infty$&$\infty$&$10$&$10$&$10$&$\infty$&$10$&$0$\\
+$p$&&&h&h&h&&h&\\
+$s$&N&N&O&O&O&N&O&C
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$g(11), e(30), d(45), c(52)$
+\end{minipage}
+
+$$\Downarrow$$
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$\infty$&$\infty$&$10$&$10$&$10$&$20$&$10$&$0$\\
+$p$&&&h&h&h&g&h&\\
+$s$&N&N&O&O&O&O&C&C
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$e(30), f(38), d(45), c(52)$
+\end{minipage}
+
+$$\Downarrow$$
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$\infty$&$\infty$&$10$&$10$&$10$&$20$&$10$&$0$\\
+$p$&&&h&h&h&g&h&\\
+$s$&N&N&O&O&C&O&C&C
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$f(38), d(45), c(52)$
+\end{minipage}
+
+$$\Downarrow$$
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$\infty$&$30$&$10$&$10$&$10$&$20$&$10$&$0$\\
+$p$&&f&h&h&h&g&h&\\
+$s$&N&O&O&O&C&C&C&C
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$b(39), d(45), c(52)$
+\end{minipage}
+
+$$\Downarrow$$
+\begin{minipage}{0.4\textwidth}
+\begin{tabular}[!htpb]{r|rrrrrrrr}
+$v$&$a$&$b$&$c$&$d$&$e$&$f$&$g$&$h$\\\hline
+$c$&$40$&$30$&$10$&$10$&$10$&$20$&$10$&$0$\\
+$p$&b&f&h&h&h&g&h&\\
+$s$&O&C&O&O&C&C&C&C
+\end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}{0.4\textwidth}
+$OPEN:$\\
+$a(40), d(45), c(52)$
+\end{minipage}
+
+$a$ ist gefunden $\rightarrow A*$ terminiert. Gefundener Pfad:
+$$h\rightarrow g\rightarrow f\rightarrow b\rightarrow a$$ 
 \end{task}
 
+\newpage
 \begin{task}{A*-Suche in ROS}
 \item[]
 Wir bleiben in C++ (falls Wiederverwendung in ROS erforderlich), visualisieren ohne Notwendigkeit aber natürlich nicht in ROS (Bilder mit opencv).
 
-Natürlich ist die Variante implementiert, die Kreise ausschließt. Anstatt eine Liste (mit teuren Operationen) zu verwalten, arbeitet der Algo aber auf einem 2D-Array in dem der \emph{CLOSED}-Status als Zustand für jede Zelle gehalten werden kann. Die \emph{OPEN}-Priority-Queue enthält Zeiger  auf diese Zellen. Ansonsten ist A* konventionell implementiert.
+Natürlich ist die Variante implementiert, die Kreise ausschließt. Anstatt eine Liste (mit teuren Operationen) zu verwalten, arbeitet der Algo aber auf einem 2D-Array in dem der \emph{CLOSED}-Status als Zustand für jede Zelle gehalten werden kann (wie auch in Aufgabe 1 gezeigt). Die \emph{OPEN}-Priority-Queue enthält Zeiger  auf diese Zellen. Ansonsten ist A* konventionell implementiert.
 
 Abbildung \ref{fig:2} zeigt die Ergebnisse. Auf den Bildern zeigt die y-Achse nach ''unten'', rote Zellen sind \emph{CLOSED}, graue sind \emph{OPEN}, blaue kennzeichnen das Hindernis, grüne Start- und Zielpunkt und die gelbe Linie den gefundenen Pfad. 
 
