@@ -1,0 +1,5 @@
+<launch>
+
+  <node name="showing_path_node" pkg="showing_path" type="showing_path_node" />
+  <node pkg="tf" type="static_transform_publisher" name="path" args="0 0 0 0 0 0 /world /map 500" />
+</launch>
