@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <math.h>
 
 class Pose {
 public:
@@ -10,6 +11,14 @@ public:
 
 	Pose(float _x, float _y, float _ox, float _oy) :
 		x(_x), y(_y), ox(_ox), oy(_oy) {};
+
+	Pose(Pose &p, float v, float w) {
+		ox = p.oy>0?p.ox-w:p.oy<0?p.ox+w:p.ox==1?p.ox-w:p.ox+w;
+		oy = p.ox>0?p.oy+w:p.ox<0?p.oy-w:p.oy==1?p.oy-w:p.oy+w;
+		float n = sqrt(ox*ox + oy*oy);
+		x  = p.x + v * ox / n;
+		y  = p.y + v * oy / n;
+	};
 };
 
 class Node {

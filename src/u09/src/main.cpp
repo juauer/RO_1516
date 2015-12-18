@@ -11,6 +11,13 @@ Pose start(0, 0, 1, 0);
 Pose  goal(0, 0, 1, 0);
 float v, w;
 
+// geschaetzte kosten von p nach goal
+double h(Pose &p) {
+	double dx = goal.x - p.x;
+	double dy = goal.y - p.y;
+	return sqrt(dx*dx + dy*dy);
+}
+
 // liegt p in einem hindernis?
 inline bool insideObstacle(Pose &p) {
 	if(p.x < 15 || p.x > 20 || p.y < -5 || p.y > 20)
@@ -22,9 +29,9 @@ inline bool insideObstacle(Pose &p) {
 // alle von p mit schrittweite v erreichbaren posen
 std::vector<Pose> neighbors(Pose &p) {
 	std::vector<Pose> ns;
-	Pose l(p.x+sin(p.ox-w), p.y+cos(p.oy+w), p.ox-w, p.oy+w);
-	Pose r(p.x+sin(p.ox+w), p.y+cos(p.oy-w), p.ox+w, p.oy-w);
-	Pose c(p.x+sin(p.ox), p.y+cos(p.oy), p.ox, p.oy);
+	Pose l(p, v,  w);
+	Pose r(p, v, -w);
+	Pose c(p, v,  0);
 
 	if(!insideObstacle(l))
 		ns.push_back(l);
@@ -43,16 +50,10 @@ double g(Pose &p1, Pose &p2) {
 	return v;
 }
 
-// geschaetzte kosten von p nach goal
-double h(Pose &p) {
-	double dx = goal.x - p.x;
-	double dy = goal.y - p.y;
-	return sqrt(dx*dx + dy*dy);
-}
-
 // ist p = goal?
 bool goalReached(Pose &p) {
-	if(abs(goal.x - p.x) < 1 && abs(goal.y - p.y) < 1)
+	if((abs(goal.x - p.x) + abs(goal.y - p.y)) < 6.25
+			&& abs(atan2(goal.oy, goal.ox) - atan2(p.oy, p.ox)) < 1)
 		return true;
 
 	return false;
@@ -61,7 +62,7 @@ bool goalReached(Pose &p) {
 int main(int argc, char **argv) {
 	goal = Pose(atof(argv[1]), atof(argv[2]), atof(argv[3]), atof(argv[4]));
 	v    = M_PI * atof(argv[5]);
-	w    = v / 4;
+	w    = atof(argv[5]) / 2;
 	ros::init(argc, argv, "show_path");
 	ros::NodeHandle n;
 	ros::Publisher pub_path = n.advertise<nav_msgs::Path>("/path", 2048);
@@ -73,8 +74,8 @@ int main(int argc, char **argv) {
 	msg_obst.pose.position.x    = 17.5;
 	msg_obst.pose.position.y    = 7.5;
 	msg_obst.pose.orientation.w = 1.0;
-	msg_obst.scale.x            = 2.5;
-	msg_obst.scale.y            = 12.5;
+	msg_obst.scale.x            = 5;
+	msg_obst.scale.y            = 25;
 	msg_obst.scale.z            = 1.0;
 	msg_obst.color.a            = 1.0;
 	msg_obst.color.r            = 0.0;
@@ -85,6 +86,7 @@ int main(int argc, char **argv) {
 	Node *node = astar.open.top();
 
 	while(node != NULL) {
+		ROS_INFO("PATH: %.1f, %.1f; %.1f, %.1f", node->pose.x, node->pose.y, node->pose.ox, node->pose.oy);
 		geometry_msgs::PoseStamped step;
 		tf::Quaternion quat     = tf::createQuaternionFromYaw(atan2(node->pose.oy, node->pose.ox));
 		step.pose.position.x    = node->pose.x;
