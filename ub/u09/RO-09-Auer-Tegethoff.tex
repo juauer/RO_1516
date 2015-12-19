@@ -89,77 +89,82 @@ Interessant ist die Wahl einer guten Heuristik. Jeder Satz der Aufgabenstellung 
 
 Als einfache, wirkungsvolle Optimierung verbessern wir die Situation beim Rangieren vor einem Hindernis durch Hinzufügen eines Potentialfeld-ähnlichen Abstoßungseffektes: besonders ungünstig für die Wegfindung ist das frontale ''auf ein Hindernis zuhalten'', bei dem sich das Auto anschließend in langen Dubin-Kurven ''verheddern'' kann. Dies wiegt umso schwerer, wenn aufgrund der fehlenden CLOSED-Liste Kreise auftreten können. Als einfache Lösung wird einer Pose bei der ein Hindernis ''vor'' dem Auto ist ein zusätzliches Gewicht gegeben, das mit dem Abstand ($L_2$) zum Hindernis skaliert. Ist das Hindernis nicht direkt ''vor'' dem Auto darf dieser Effekt natürlich nicht auftreten, so dass man nach wie vor ''nah'' am Hindernis vorbeifahren kann.
 
-Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zulässige Orientierungsfehler, $d$ die Schrittweite, $r=4$ der Radius des Wendekreises, $(x_o,y_o)\in\{\mathbb{R}^2|15\le x_o\le20\wedge -5\le y_o\le 20\}$ das Hindernis und $((x_t,y_t),(ox_t,oy_t))$ die Zielpose.
+UPDATE: Eine zuerst testweise implementierte euklidsche Heuristik liefert schon akzeptable Ergebnisse (Stand: 19.12.). Ob wir jetzt noch einen Anreiz haben, das mit dem geschilderten, ambitionierteren Ansatz zu vergleichen? Schätze, ich mach' erstmal Pause ...
+
+Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zulässige Orientierungsfehler, $d$ die Schrittweite (als Vielfaches von $\pi$), $r=4$ der Radius des Wendekreises, $(x_o,y_o)\in\{\mathbb{R}^2|15\le x_o\le20\wedge -5\le y_o\le 20\}$ das Hindernis, $((x_t,y_t),(ox_t,oy_t))$ die Zielpose und $|O_d|$ die Größe der OPEN-Liste bei Schrittweite $d$.
 
 \newpage
 \subtask{a}
-$$((x_t,y_t),(ox_t,oy_t))=((6,3),(0,1))$$
+\begin{align*}
+((x_t,y_t),(ox_t,oy_t))&=((6,3),(0,1))\\
+|O_1|&=3\\
+|O_{0.5}|&=7
+\end{align*}
 
 \begin{figure}[!htpb]
 \centering
 \subfigure[$d=\pi$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-1}
 }
 \subfigure[$d=\frac{\pi}{2}$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-2}
 }
 \caption{Plot a}
 \end{figure}
 
 \subtask{b}
-$$((x_t,y_t),(ox_t,oy_t))=((0,5),(0,1))$$
+\begin{align*}
+((x_t,y_t),(ox_t,oy_t))&=((0,5),(0,1))\\
+|O_1|&=113\\
+|O_{0.5}|&=3059
+\end{align*}
 
 \begin{figure}[!htpb]
 \centering
 \subfigure[$d=\pi$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-3}
 }
 \subfigure[$d=\frac{\pi}{2}$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-4}
 }
 \caption{Plot b}
 \end{figure}
 
 \newpage
 \subtask{c}
-$$((x_t,y_t),(ox_t,oy_t))=((0,5),(1,0))$$
+\begin{align*}
+((x_t,y_t),(ox_t,oy_t))&=((0,5),(1,0))\\
+|O_1|&=13\\
+|O_{0.5}|&=103
+\end{align*}
 
 \begin{figure}[!htpb]
 \centering
 \subfigure[$d=\pi$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-5}
 }
 \subfigure[$d=\frac{\pi}{2}$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-6}
 }
 \caption{Plot c}
 \end{figure}
 
 \subtask{d}
-$$((x_t,y_t),(ox_t,oy_t))=((30,15),(1,0))$$
+\begin{align*}
+((x_t,y_t),(ox_t,oy_t))&=((30,15),(1,0))\\
+|O_1|&=1300\\
+|O_{0.5}|&=3073656
+\end{align*}
 
 \begin{figure}[!htpb]
 \centering
 \subfigure[$d=\pi$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-7}
 }
 \subfigure[$d=\frac{\pi}{2}$]{
-  \includegraphics[width=0.48\linewidth]{platzhalter}
+  \includegraphics[width=0.3\linewidth]{capture_1-8}
 }
 \caption{Plot d}
-\end{figure}
-\end{task}
-
-\newpage
-\begin{task}{}
-\item[]
-Der in Aufgabe 1 d) geschilderte Fall lässt sich in Abbildung \ref{fig:2-1} bewundern.
-
-\begin{figure}[!htpb]
-\centering
-\includegraphics[width=0.8\linewidth]{platzhalter}
-\caption{Pfad in rviz}
-\label{fig:2-1}
 \end{figure}
 \end{task}
 \end{document}
