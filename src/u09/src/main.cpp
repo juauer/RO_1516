@@ -20,7 +20,7 @@ double h(Pose &p) {
 
 // liegt p in einem hindernis?
 inline bool insideObstacle(Pose &p) {
-	if(p.x < 15 || p.x > 20 || p.y < -5 || p.y > 20)
+	if(p.x < 15-w || p.x > 20+w || p.y < -5-w || p.y > 20+w)
 		return false;
 
 	return true;
