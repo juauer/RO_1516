@@ -85,18 +85,20 @@ Da die Geschwindigkeit des Autos sowie die Schrittweite fest aber beliebig sind,
 
 Die Auswahl der Nachbarn eines Knotens ist straight-forward: Knoten repräsentieren eine 3D-Pose des Autos, so dass es stets 3 Nachbarn gibt - je nachdem, ob man links / rechts / gar nicht einlenkt. Die neue Pose für den neuen Knoten ergibt sich daraus direkt.
 
-Interessant ist die Wahl einer guten Heuristik. Jeder Satz der Aufgabenstellung scheint hier laut {\bf Dubin} zu rufen - da hier etwas Einfacheres auch nicht ausreichend wäre (vor Allem die Bewegung in unmittelbarer Nähe eines Hindernisses erfordert hier ein Modell, das die nicht-Holonomie des Agenten abbilden kann), der Bedarf von etwas Ambitionierterem (Reeds-Shepp) aber durch die Randbedingungen der Aufgabe ausgeschlossen werden kann, implementieren wir als Heuristik eben genau besagte Dubin-Kurven.
+Die tatsächlichen Kosten zwischen zwei Knoten entsprechen offensichtlich immer der Schrittweite.
 
-Als einfache, wirkungsvolle Optimierung verbessern wir die Situation beim Rangieren vor einem Hindernis durch Hinzufügen eines Potentialfeld-ähnlichen Abstoßungseffektes: besonders ungünstig für die Wegfindung ist das frontale ''auf ein Hindernis zuhalten'', bei dem sich das Auto anschließend in langen Dubin-Kurven ''verheddern'' kann. Dies wiegt umso schwerer, wenn aufgrund der fehlenden CLOSED-Liste Kreise auftreten können. Als einfache Lösung wird einer Pose bei der ein Hindernis ''vor'' dem Auto ist ein zusätzliches Gewicht gegeben, das mit dem Abstand ($L_2$) zum Hindernis skaliert. Ist das Hindernis nicht direkt ''vor'' dem Auto darf dieser Effekt natürlich nicht auftreten, so dass man nach wie vor ''nah'' am Hindernis vorbeifahren kann.
+Interessant ist die Wahl einer guten Heuristik. Es bieten sich hier natürlich Dubin-Kurven an. Als erste quick\&dirty Implementierung haben wir jedoch zunächst $L_2$-Distanzen als Heuristik verwendet und überraschend gute Ergebnisse erzielt: auch der ''lange'' Weg war in $<1s$ berechnet. Da es in der Aufgabe nicht näher spezifiert war haben wir deshlab - nichts für ungut - Dubin-Kurven nicht mehr implementiert. Zwischen den Jahren ist die Zeit immer eher knapp. Schade.
 
-UPDATE: Eine zuerst testweise implementierte euklidsche Heuristik liefert schon akzeptable Ergebnisse (Stand: 19.12.). Ob wir jetzt noch einen Anreiz haben, das mit dem geschilderten, ambitionierteren Ansatz zu vergleichen? Schätze, ich mach' erstmal Pause ...
+Um bei Verwendung einer $L_2$-Heuristik nicht mit dem Hindernis zu kollidieren, haben wir dieses artifiziell um die Schrittweite vergrößert. Dieses Vorgehen liefert natürlich keinen optimalen Pfad (im konkreten Fall dürfte jedoch kein Unterschied zu erkennen sein).
 
-Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zulässige Orientierungsfehler, $d$ die Schrittweite (als Vielfaches von $\pi$), $r=4$ der Radius des Wendekreises, $(x_o,y_o)\in\{\mathbb{R}^2|15\le x_o\le20\wedge -5\le y_o\le 20\}$ das Hindernis, $((x_t,y_t),(ox_t,oy_t))$ die Zielpose und $|O_d|$ die Größe der OPEN-Liste bei Schrittweite $d$.
+Ihr habt es uns durch den großzügen erlaubten Fehler recht einfach gemacht - ansonsten wären wir um Dubin ggf. nicht herum gekommen ...
+
+Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zulässige Orientierungsfehler, $d$ die Schrittweite (als Vielfaches von $\pi$), $r=4$ der Radius des Wendekreises, $(x_o,y_o)\in\{\mathbb{R}^2|15\le x_o\le20\wedge -5\le y_o\le 20\}$ das Hindernis, $t=((x_t,y_t),(ox_t,oy_t))$ die Zielpose und $|O_d|$ die Größe der OPEN-Liste bei Schrittweite $d$.
 
 \newpage
 \subtask{a}
 \begin{align*}
-((x_t,y_t),(ox_t,oy_t))&=((6,3),(0,1))\\
+t&=((6,3),(0,1))\\
 |O_1|&=3\\
 |O_{0.5}|&=7
 \end{align*}
@@ -114,7 +116,7 @@ Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zul�
 
 \subtask{b}
 \begin{align*}
-((x_t,y_t),(ox_t,oy_t))&=((0,5),(0,1))\\
+t&=((0,5),(0,-1))\\
 |O_1|&=113\\
 |O_{0.5}|&=3059
 \end{align*}
@@ -133,7 +135,7 @@ Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zul�
 \newpage
 \subtask{c}
 \begin{align*}
-((x_t,y_t),(ox_t,oy_t))&=((0,5),(1,0))\\
+t&=((0,5),(-1,0))\\
 |O_1|&=13\\
 |O_{0.5}|&=103
 \end{align*}
@@ -151,10 +153,11 @@ Es seien im Folgenden: $e_p=2.5$ der zulässige Positionfehler, $e_o=1$ der zul�
 
 \subtask{d}
 \begin{align*}
-((x_t,y_t),(ox_t,oy_t))&=((30,15),(1,0))\\
+t&=((30,15),(1,0))\\
 |O_1|&=1300\\
 |O_{0.5}|&=3073656
 \end{align*}
+Die kleine Überschneidung mit dem Hindernis (rechts) ist lediglich auf die etwas dicker gezeichnete Linie zurückzuführen.
 
 \begin{figure}[!htpb]
 \centering
