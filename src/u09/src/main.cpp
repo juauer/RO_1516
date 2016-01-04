@@ -11,22 +11,20 @@ Pose start(0, 0, 1, 0);
 Pose  goal(0, 0, 1, 0);
 float v, w;
 
-// geschaetzte kosten von p nach goal
 double h(Pose &p) {
 	double dx = goal.x - p.x;
 	double dy = goal.y - p.y;
 	return sqrt(dx*dx + dy*dy);
 }
 
-// liegt p in einem hindernis?
 inline bool insideObstacle(Pose &p) {
+	// HACK: Dubin curves needed instead of artificially expanded obstacle size
 	if(p.x < 15-w || p.x > 20+w || p.y < -5-w || p.y > 20+w)
 		return false;
 
 	return true;
 }
 
-// alle von p mit schrittweite v erreichbaren posen
 std::vector<Pose> neighbors(Pose &p) {
 	std::vector<Pose> ns;
 	Pose l(p, v,  w);
@@ -45,12 +43,10 @@ std::vector<Pose> neighbors(Pose &p) {
 	return ns;
 }
 
-// tatsaechliche kosten von p1 nach p2
 double g(Pose &p1, Pose &p2) {
 	return v;
 }
 
-// ist p = goal?
 bool goalReached(Pose &p) {
 	if((abs(goal.x - p.x) + abs(goal.y - p.y)) < 6.25
 			&& abs(atan2(goal.oy, goal.ox) - atan2(p.oy, p.ox)) < 1)
