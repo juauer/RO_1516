@@ -134,6 +134,38 @@ Es ist anzumerken, dass die Parabelsegmente hier nicht in einem Baum (sondern nu
 \newpage
 \begin{task}{Potentialfelder}
 \item[]
+Potentialfelder sind eine sehr flexible Waffe im Kampf gegen die Wirren der Pfadfindung im zweidimensionalen Raum. In Ermangelung eines konkreten Anwendungsfalls implementieren wir sie völlig willkürlich und zwar wie folgt:
 
+\begin{itemize}
+\item Additive Felder können schwierig zu handeln sein (bspw. wenn ein Hinderniss nahe des Ziels dieses unerreichbar macht), unsere Felder sind deshalb exklusiv: an jedem Pixel wirkt nur die Kraft des einen Feldes, das dort am stärksten ist.
+\item Alle attraktiven Felder haben im Zentrum den Wert $-1$ und alle repulsiven Felder den Wert $1$. Mit zunehmendem Abstand nähert sich die Stärke des Feldes dem Wert $0$ und zwar linear! Ein Feld $f$ ist somit eindeutig durch $f=(x,y,r)$ beschrieben, wobei $(x,y)$ das Zentrum des Feldes ist und $r$ der Abstand, bei dem unter Annahme einer linearen Abschwächung die Stärke des Feldes $0$ ist.
+\item Um aus lokalen Optima zu entkommen, weisen wir bei der Pfadsuche einem besuchten Pixel eine zusätzlich repulsive Kraft zu.
+\end{itemize}
+
+Im Experiment werden jeweils 8 repulsive Felder erzeugt, mit zufälligen $x,y,r$. Umso roter ein Pixel visualisiert ist, desto stärker ist dort die repulsive Kraft.
+
+Außerdem wird ein Zielpunkt (weiss) zufällig (im unteren, rechten Quadranten) erzeugt und mit einem attraktiven Feld versehen. Umso blauer ein Pixel, desto stärker ist dort die attraktive Kraft.
+
+Der Startpunkt ist lila und liegt zufällig im oberen linken Quadranten. Der gefundene Weg zwischen Start und Ziel ist schwarz eingezeichnet.
+
+Abbildung \ref{fig:2-1} zeigt vier Instanzen des Experiments. Vor allem in (c) ist schön zu sehen, wie aus einem lokalen Optimum ''entkommen'' wird.
+
+\begin{figure}[!htpb]
+\centering
+\subfigure[]{
+  \includegraphics[width=0.48\linewidth]{../../src/u10/captures/capture_1-4}
+}
+\subfigure[]{
+  \includegraphics[width=0.48\linewidth]{../../src/u10/captures/capture_1-3}
+}
+\subfigure[]{
+  \includegraphics[width=0.48\linewidth]{../../src/u10/captures/capture_1-2}
+}
+\subfigure[]{
+  \includegraphics[width=0.48\linewidth]{../../src/u10/captures/capture_1-1}
+}
+\caption{Potentialfelder}
+\label{fig:2-1}
+\end{figure}
 \end{task}
 \end{document}
