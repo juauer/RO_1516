@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+	<node name="u11_drive" pkg="u11" type="u11_drive" />
+	<node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/u11/cur_x /u11/cur_y /u11/tar_x /u11/tar_y" />
+</launch>
