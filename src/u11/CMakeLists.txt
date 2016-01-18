@@ -10,5 +10,5 @@ catkin_package(
 add_executable(u11_draw src/draw.cpp src/rrt.h src/rrt.cpp)
 target_link_libraries(u11_draw ${catkin_LIBRARIES})
 
-add_executable(u11_drive src/drive.cpp src/rrt.h src/rrt.cpp)
+add_executable(u11_drive src/drive.cpp src/rrt.h src/rrt.cpp src/PID.h src/PID.cpp)
 target_link_libraries(u11_drive ${catkin_LIBRARIES})
