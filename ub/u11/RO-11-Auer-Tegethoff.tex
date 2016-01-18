@@ -110,6 +110,17 @@ Der Algo verhält sich genau wie erwartet. Besonders ''schön'' ist (b), wo ein 
 
 \begin{task}{RRT 2}
 \item[]
+Wir nutzen zwar den alten PID, aufgrund der niedrigen Geschwindigkeiten ist dessen Auswirkung aber marginal - ein $(1,0,0)$-PID funktioniert hier genauso gut wie jeder andere auch. Wir fahren halt sehr langsam.
 
+Wir fahren - wie vorgeschlagen - stets den nächstem Punkt auf dem geplanten Pfad an, bis wir ''nah genug'' sind ($d=2$).
+
+Abbildung \ref{fig:2} zeigt die aktuelle Position des Autos $(cur_x,cur_y)$ die sich stets dem nächsten Punkt auf dem geplanten Pfad $(tar_x,tar_y)$ nähert. Da der Plot sehr breit ist, ist nur ein Ausschnitt abgebildet.
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=1.1\linewidth]{capture_2-1}
+\caption{Geplanter Pfad und tatsächliche Position über Zeit}
+\label{fig:2}
+\end{figure}
 \end{task}
 \end{document}
