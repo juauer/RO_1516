@@ -238,20 +238,35 @@ Davon abgesehen müssen nur ein paar Grenzen angepasst werden und man erhält Ab
 \newpage
 \begin{task}{}
 \subtask{a}
-Wir definieren Ereignis $A$ als ''keine Enten sind zu sehen'' und Ereignis $B$
-als ''Krokodile sind zu sehen''.\\
-Wir wissen: $P(\lnot A) = (P(\lnot A|B) + P(\lnot A|\lnot B)) = (0.1+0.5) = 0.6$. Daraus folgt
-$P(A) = 1 - P(\lnot A) = 0.4$\\
-Außerdem wissen wir: $P(B) = P(\lnot A|B) + P(A|B)$. Das stellen wir um nach
-$P(A|B) = P(B) - P(\lnot A|B)$ und rechnen aus: $0.2 = 0.4 * x + 0.6 * 0.5 \leftrightarrow x =
-\frac{0.2 - (0.6 * 0.5)}{0.4} = 0.425$ daraus ergibt sich $P(A|B) = 0.4 * 0.425 = 0.17$\\
-Weil wir alle benötigten Variablen haben, setzen wir in den Satz von Bayes ein:
-Es gilt der Satz von Bayes: $P(B|A) = \frac{P(A|B) * P(B)}{P(A)} = \frac{0.17 * 0.2}{0.4} = 0.085$.
+Wir definieren Ereigniss $E$ als ''Enten sind zu sehen'' und Ereigniss $K$ als ''Krokodile sind zu sehen''.
+
+Wir wissen aus der Problembeschreibung:
+
+\begin{align*}
+p(E|K)&=0.1\\
+p(E|\lnot K)&=0.5\\
+p(K)&=0.2
+\end{align*}
+
+Um $p(K|\lnot E)$ auszurechnen benötigt man den Satz von Bayes $p(K|\lnot E)=\frac{p(E|\lnot K)\cdot p(K)}{p(\lnot E)}$ und somit noch $p(\lnot E)$. Dieses wiederum ergibt sich aus:
+
+\begin{align*}
+p(\lnot E)&=1-p(E)\\
+&=1-(p(E|K)+p(E|\lnot K))\\
+&=1-0.1-0.5\\
+&=0.4
+\end{align*}
+
+Eingesetzt in Bayes Satz erhält man so:
+
+\begin{align*}
+p(K|\lnot E)&=\frac{p(E|\lnot K)\cdot p(K)}{p(\lnot E)}\\
+&=\frac{0.5\cdot 0.2}{0.4}\\
+&=0.25
+\end{align*}
 
 \subtask{b}
-Die Variablen $\lnot A$ und $B$ sind abhängig.\\
-Beweis durch Widerspruch: Angenommen $\lnot A$ und $B$ sind unabhängig, dann gilt $P(\lnot A|B) = P(\lnot A)$.
-Widerspruch: $0.1 \neq 0.6$.\\ q.e.d.
-
+Die Ereignisse $E$ und $K$ sind abhängig. Beweis durch Widerspruch: Angenommen $A$ und $K$ sind unabhängig, dann gilt $P(E|K) = P(E)$. Aber: $0.1\neq 0.6$.\\
+\begin{align*}&&&&\qed\end{align*}
 \end{task}
 \end{document}
