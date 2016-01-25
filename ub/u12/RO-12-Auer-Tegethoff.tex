@@ -215,11 +215,27 @@ Die Geschwindigkeit $v$ ist dort:
 $$v=e'(1)=3\cdot a+2\cdot b+c=2$$
 \end{task}
 
+\newpage
 \begin{task}{}
 \item[]
+Es muss nur ein klitzekleines Stückchen Code geändert werden, um die zufälligen Punkte zu erzeugen:
 
+\lstinputlisting[language=C++, firstline=46, lastline=56]{../../src/spline_test/src/spline_test.cpp}
+
+Davon abgesehen müssen nur ein paar Grenzen angepasst werden und man erhält Abbildung \ref{fig:2}. Wie genau die Ableitungen am Anfang und am Ende gewählt werden ist letztlich egal (bei uns: $=1$). Code verstanden: check!
+
+\begin{figure}[!htpb]
+\centering
+\subfigure[$sampling\_num=10$]
+{\includegraphics[width=0.8\linewidth]{capture_2-1}}
+\subfigure[$sampling\_num=200$]
+{\includegraphics[width=0.8\linewidth]{capture_2-2}}
+\caption{Splines}
+\label{fig:2}
+\end{figure}
 \end{task}
 
+\newpage
 \begin{task}{}
 \subtask{a}
 Wir definieren Ereignis $A$ als ''keine Enten sind zu sehen'' und Ereignis $B$
