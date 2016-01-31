@@ -86,7 +86,7 @@
           </geometry>
         </visual>
       </link>
-      <plugin name="model_push" filename="/home/zargol/catkin_ws2/src/ackermann_vehicle_13/ackermann_vehicle_13_gazebo/worlds/libmodel_push.so"/>
+      <plugin name="model_push" filename="/home/juauer/RO_1516/src/ackermann_vehicle_13/ackermann_vehicle_13_gazebo/worlds/libmodel_push.so"/>
 
       <!--plugin name="model_push" filename="$(find ackermann_vehicle_13_gazebo)/worlds/libmodel_push.so"/-->
 

@@ -15,11 +15,34 @@
 # limitations under the License.
 
 cmake_minimum_required(VERSION 2.8.3)
-project(ackermann_vehicle_13_gazebo)
-find_package(catkin REQUIRED)
-catkin_package()
 
-catkin_install_python(PROGRAMS scripts/ackermann_controller
-                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-install(DIRECTORY config launch
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+project(
+  ackermann_vehicle_13_gazebo
+)
+
+find_package(
+  catkin REQUIRED cmake_modules roscpp tf std_msgs visualization_msgs nav_msgs ackermann_msgs geometry_msgs
+)
+
+find_package( Eigen )
+
+include_directories(
+  ${Eigen_INCLUDE_DIRS}
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime
+)
+
+catkin_install_python(
+  PROGRAMS scripts/ackermann_controller
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+                      
+install(
+  DIRECTORY config launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+add_executable( u13_kalman src/kalman.cpp )
+target_link_libraries( u13_kalman ${catkin_LIBRARIES} ${Eigen_LIBRARIES} )
