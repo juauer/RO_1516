@@ -38,5 +38,5 @@
     <node pkg="tf" type="static_transform_publisher" name="laser_FRAME" args="0 0 0 0 0 0 /hokuyo_link /ackermann_vehicle_13/hokuyo_link 500" />
     <node pkg="tf" type="static_transform_publisher" name="camera_FRAME" args="0 0 0 0 0 0 /camera_link /ackermann_vehicle_13/camera_link 500" />
 	<node name="kalman" pkg="ackermann_vehicle_13_gazebo" type="u13_kalman" output="screen" />
-	<node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/kalman_prediction_x /kalman_prediction_v /ackermann_vehicle_13/gazebo/model_states/pose[2]/position/x /ackermann_vehicle_13/gazebo/model_states/twist[2]/linear/x" />
+	<node name="rqt_plot" pkg="rqt_plot" type="rqt_plot" args="/measurement_x /measurement_v /kalman_prediction_x /kalman_prediction_v /ackermann_vehicle_13/gazebo/model_states/pose[2]/position/x /ackermann_vehicle_13/gazebo/model_states/twist[2]/linear/x" />
 </launch>

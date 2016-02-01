@@ -21,7 +21,7 @@ project(
 )
 
 find_package(
-  catkin REQUIRED cmake_modules roscpp tf std_msgs visualization_msgs nav_msgs ackermann_msgs geometry_msgs
+  catkin REQUIRED cmake_modules roscpp tf std_msgs visualization_msgs nav_msgs ackermann_msgs geometry_msgs gazebo_msgs
 )
 
 find_package( Eigen )
