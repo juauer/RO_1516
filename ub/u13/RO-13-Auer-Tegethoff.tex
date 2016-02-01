@@ -81,16 +81,64 @@ belowcaptionskip=15pt}
 
 \begin{task}{}
 \item[]
+Wir messen hierfür die $x$-Position des Blocks $x^m$ via \emph{/ackerman\_vehicle/laser/scan/ranges$\left[269\right]+0.5$} (blau in Abbildung \ref{fig:1}) sowie die erste Ableitung davon $v^m$ (rot in Abbildung \ref{fig:1}). Außerdem messen wir die ''echten'' Werte $x^{gt},v^{gt}$ aus der Gazebo Ground-Truth. Nach 250 Iterationen erhalten wir somit 250 Datenpunkte für den Fehler zwischen Messung und Ground-Truth $X=\{(x^{gt}_1-x^m_1,v^{gt}_1-v^m_1),...,(x^{gt}_{250}-x^m_{250},v^{gt}_{250}-v^m_{250})\}$ und können die Kovarianzmatrix $R$ für diesen Fehler ausrechnen:
 
+\begin{align*}
+\mu&=\frac{1}{250}\cdot\sum_{i=1}^{250}X_i\\
+R&=\frac{1}{250}\cdot\begin{pmatrix}\sum_{i=1}^{250}((X_{i1}-\mu_1)\cdot (X_{i1}-\mu_1))&\sum_{i=1}^{250}((X_{i1}-\mu_1)\cdot (X_{i2}-\mu_))\\\sum_{i=1}^{250}((X_{i2}-\mu_2)\cdot (X_{i1}-\mu_1))&\sum_{i=1}^{250}((X_{i2}-\mu_2)\cdot (X_{i2}-\mu_2))\end{pmatrix}
+\end{align*}
+
+Nach einigen Durchläufen kommt bei uns im Mittel so etwas heraus wie:
+$$R=\begin{pmatrix}0.01&0.001\\0.001&1\end{pmatrix}$$
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=1.1\linewidth]{capture_1-1}
+\caption{Messungen und GT}
+\label{fig:1}
+\end{figure}
+\end{task}
+
+\newpage
+\begin{task}{}
+\item[]
+Das geht so nicht: wir müssten hier als Fehler die Differenz zwischen der Gazebo-Ground-Truth Pose und $sin\left(\frac{2\cdot\pi\cdot t}{0.6}\right)$ berechnen. Das kann aber nur funktionieren, wenn wir $t$ genau kennen. Leider ist nicht angegeben, welche Zeit hier benutzt wird. Raten hilft nicht viel, da ROS, Gazebo und der gestartete Node alle unterschiedliche Timestamps ausgeben können. Auch die Einheit der Zeit ist somit nicht klar spezifiziert.
+
+Das rauszukriegen wäre echt fummelig gewesen und wir haben - ehrlich gesagt - keinen Bock darauf. Wir haben immerhin in Aufgabe 1 gezeigt, dass wir grundsätzlich Fehler-Kovarianzmatrizen berechnen können, hier benutzen wir jetzt einfach:
+$$Q=\begin{pmatrix}1&0\\0&1\end{pmatrix}$$
 \end{task}
 
 \begin{task}{}
 \item[]
+Joa. War nicht ganz einfach, ist aber eigentlich straight-forward:
 
-\end{task}
+Wir speichern stets die letzte Position und Geschwindigkeit $x$ und die letzte Kovarianzmatrix $p$. Immer wenn das Laser-Callback zum Zeitpunkt $t$ triggert updaten wir diese Werte wie folgt:
 
-\begin{task}{}
-\item[]
+Measure:
+\begin{align*}
+m&=\begin{pmatrix}x^m_t\\v^m_t\end{pmatrix}
+\end{align*}
 
+Predict:
+\begin{align*}
+x'&=A\cdot x\\
+p'&=A\cdot p\cdot A^T+Q
+\end{align*}
+
+Update:
+\begin{align*}
+k&=p'\cdot H^T\cdot (H\cdot p'\cdot H^T+R)\\
+x&=x'+k\cdot (m-H\cdot x')\\
+p&=p'-k\cdot H\cdot p'
+\end{align*}
+
+Ergebnisse zeigt Abbildung \ref{fig:3}. Wenn die Messdaten quasi perfekt sind, ist das Filtern natürlich ziemlich sinnlos. Für zukünftige Übungszettel würde ich Daten empfehlen, die wenigstens etwas verrauscht sind. Die Geschwindigkeit lässt sich auch nicht gut filtern - das System oszilliert zu schnell.
+
+\begin{figure}[!htpb]
+\centering
+\includegraphics[width=1.1\linewidth]{capture_3-1}
+\caption{Filter-Output und GT}
+\label{fig:3}
+\end{figure}
 \end{task}
 \end{document}
